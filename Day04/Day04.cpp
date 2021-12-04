@@ -56,10 +56,23 @@ winbingo find_horizontal(std::vector<membingo>& board) {
     return result;
 }
 
-winbingo find_vertical(std::vector<membingo>& board) {
-    winbingo result;
-    std::vector<long>order;
-    long total_board = board.size() / 25;
+void find_horizontal(std::vector<membingo>& board, std::vector<winbingo>& win_list) {
+    for (long i = 0; i < board.size(); i += 5) {
+        winbingo result;
+        result.bingo = board[i].mark &&
+            board[i + 1].mark &&
+            board[i + 2].mark &&
+            board[i + 3].mark &&
+            board[i + 4].mark;
+        if (!result.bingo) continue;
+        result.board = i / 25;
+        win_list.push_back(result);
+    }
+}
+
+std::vector<long> vertical_order(long size) {
+    long total_board = size / 25;
+    std::vector<long> order;
     for (long i = 0; i < total_board; i++) {
         for (long j = 0; j < 5; j++) {
             order.push_back(i * 25 + j);
@@ -69,6 +82,12 @@ winbingo find_vertical(std::vector<membingo>& board) {
             order.push_back(i * 25 + j + 20);
         }
     }
+    return order;
+}
+
+winbingo find_vertical(std::vector<membingo>& board) {
+    winbingo result;
+    std::vector<long> order = vertical_order(board.size());
 
     for (long i = 0; i < order.size(); i += 5) {
         result.bingo = board[order[i]].mark &&
