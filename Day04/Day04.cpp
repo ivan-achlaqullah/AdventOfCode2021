@@ -34,7 +34,7 @@ std::vector<long> read_drawn_num(std::ifstream& raw_data) {
     return result;
 }
 
-winbingo find_horizontal(std::vector<membingo>& board, bool silent) {
+winbingo find_horizontal(std::vector<membingo>& board) {
     winbingo result;
     for (long i = 0; i < board.size(); i += 5) {
         result.bingo = board[i].mark &&
@@ -44,7 +44,6 @@ winbingo find_horizontal(std::vector<membingo>& board, bool silent) {
             board[i + 4].mark;
         if (!result.bingo) continue;
         result.board = i / 25;
-        if (silent) return result;
         std::cout << "Horizontal bingo found!\n";
         std::cout << "At board " << result.board + 1 << "\n";
         std::cout << board[i].number << "\n";
@@ -57,7 +56,7 @@ winbingo find_horizontal(std::vector<membingo>& board, bool silent) {
     return result;
 }
 
-winbingo find_vertical(std::vector<membingo>& board, bool silent) {
+winbingo find_vertical(std::vector<membingo>& board) {
     winbingo result;
     std::vector<long>order;
     long total_board = board.size() / 25;
@@ -79,7 +78,6 @@ winbingo find_vertical(std::vector<membingo>& board, bool silent) {
             board[order[i + 4]].mark;
         if (!result.bingo) continue;
         result.board = order[i] / 25;
-        if (silent) return result;
         std::cout << "Vertical bingo found!\n";
         std::cout << "At board " << result.board + 1 << "\n";
         std::cout << board[order[i]].number << "\n";
@@ -99,8 +97,8 @@ winresult winner_board(const std::vector<long>& drawn, std::vector<membingo>& bo
             if (j.number == drawn[i]) j.mark = true;
         }
         if (i < 5) continue;
-        auto win = find_horizontal(board,false);
-        if (!win.bingo) win = find_vertical(board,false);
+        auto win = find_horizontal(board);
+        if (!win.bingo) win = find_vertical(board);
         if (win.bingo) {
             result.board = win.board;
             result.last_num = drawn[i];
