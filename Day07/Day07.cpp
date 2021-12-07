@@ -20,36 +20,20 @@ std::vector<long> read_data(std::string file) {
 long fuel_used(long distance, bool constant_rate) {
     if (constant_rate)
         return distance;
-    long fuel = 0;
-    for (long i = 1; i <= distance; i++) {
-        fuel += i;
-    }
-    return fuel;
+    return (distance * (distance + 1)) / 2;
 }
 
 std::pair<long, long> calculate(std::unordered_map<long, long>& crabs, bool constant_rate) {
-    long min = 0;
     long max = 0;
-    bool def = false;
-
     for (auto& i : crabs) {
-        if (!def) {
-            min = i.first;
-            max = i.first;
-            def = true;
-            continue;
-        }
-        if (i.first < min) {
-            min = i.first;
-        }
-        else if (i.first > max) {
+        if (i.first > max) {
             max = i.first;
         }
     }
 
     std::unordered_map<long, long> cost_map;
     std::vector<long> cost_list;
-    for (long i = min; i <= max; i++) {
+    for (long i = 0; i <= max; i++) {
         long cost = 0;
         for (auto& j : crabs) {
             long distance = j.first - i;
@@ -96,8 +80,6 @@ int main()
 
     auto p2test = calculate(test_crabs, false);
     auto p2 = calculate(input_crabs, false);
-
-    std::cout << "Test " << fuel_used(16 - 5, false) << "\n";
 
     std::cout << "Part 2 Test Pos  : " << p2test.first << "\n";
     std::cout << "Part 2 Test Cost : " << p2test.second << "\n";
