@@ -1,0 +1,15 @@
+#include <iostream>
+#include <fstream>
+#include <string>
+#include <sstream>
+#include <vector>
+#include <regex>
+#include <unordered_map>
+#include <algorithm>
+#include <utility>
+#include <array>
+
+int main()
+{
+    std::cout << "Hello World!\n";
+}
